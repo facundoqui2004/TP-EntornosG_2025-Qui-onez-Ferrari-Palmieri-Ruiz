@@ -1,0 +1,339 @@
+/* -----------------Index */
+/* Estructura general */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.layout-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar */
+header {
+  width: 250px;
+  background-color: #9b89b3;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Logo */
+header img.logo {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 15px;
+  border-radius: 50%;
+}
+
+/* Navegación */
+header .nav-link {
+  color: white;
+  text-align: center;
+  margin: 10px 0;
+}
+
+header .nav-link:hover {
+  color: #ddd;
+}
+
+header hr {
+  width: 80%;
+  border: 1px solid #000000;
+  margin: 10px 0;
+}
+
+/* Botones */
+header .btn-group {
+  margin-top: auto;
+  margin-bottom: 10px;
+}
+
+/* Footer del sidebar */
+header .footer {
+  font-size: 0.8rem;
+  text-align: center;
+  color: #ccc;
+}
+
+/* Área de contenido */
+.content-area {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+/* Main */
+main {
+  flex-grow: 1;
+  background-color: #f8f9fa;
+  padding: 30px;
+  overflow-y: auto;
+}
+
+/* Footer */
+footer {
+  background-color: #b9b9b9;
+  color: white;
+  text-align: center;
+  padding: 10px;
+}
+
+/* Imagen de prueba (simulación) */
+.placeholder-img {
+  width: 100%;
+  height: 300px;
+  border: 2px dashed #999;
+}
+
+
+
+/*-----------------------------login--------*/
+body#login {
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    font-family: "Roboto", sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+body#login .title {
+    background-color: #d2abeb;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    width: 380px;
+    height: 40px;
+    border: 2px solid #b864c9;
+    text-align: center;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 0;
+}
+
+body#login .title h1 {
+    margin: 0;
+    font-size: 24px;
+    color: #4a2d5c;
+}
+
+body#login .container {
+    background-color: white;
+    padding: 10px;
+    width: 380px;
+    border: 2px solid #4a2d5c;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+body#login .fit-picture {
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+body#login form {
+    text-align: left;
+    font-size: 20px;
+}
+
+body#login input[type="text"],
+body#login input[type="password"] {
+    width: 100%;
+    padding: 15px;
+    font-size: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+}
+
+body#login .login-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #4a2d5c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+body#login .login-btn:hover {
+    background-color: #3a1f4c;
+}
+
+body#login .error {
+    color: red;
+    font-size: 15px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+body#login .register-text {
+    margin-top: 20px;
+    font-size: 14px;
+    text-align: center;
+}
+
+body#login .register-text a {
+    color: #3b0a6f;
+    text-decoration: none;
+    font-weight: bold;
+}
+/* Estilos específicos para login */
+.container-login {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  max-width: 500px;
+  margin: auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.container-login .fit-picture {
+  width: 100px;
+  margin-bottom: 20px;
+}
+
+.login-btn {
+  background-color: #9b89b3;
+  color: white;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background-color: #856f9b;
+}
+
+.register-text {
+  margin-top: 15px;
+}
+
+.error {
+  color: red;
+  font-size: 0.85rem;
+}
+
+
+
+/*----------------------------- register */
+body#register {
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    font-family: "Roboto", sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-size: 20px;
+}
+
+body#register .wrapper {
+    background-color: #ffffff;
+    padding: 20px;
+    width: 380px;
+    border: 2px solid #4a2d5c;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+body#register h2 {
+    background-color: #d2abeb;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin: -20px -20px 20px -20px;
+    padding: 15px;
+    color: #4a2d5c;
+    font-size: 24px;
+    border-bottom: 2px solid #4a2d5c;
+}
+
+body#register .form-group {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+body#register label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: #4a2d5c;
+}
+
+body#register input[type="text"],
+body#register input[type="password"],
+body#register select {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+body#register .error {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+body#register .form-actions {
+    display: flex;
+    flex: content;
+    justify-content:center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+body#register input[type="submit"],
+body#register input[type="reset"] {
+    width: 48%;
+    padding: 10px;
+    background-color: #4a2d5c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 4%;
+}
+
+body#register input[type="reset"] {
+    background-color: #a67bbd;
+}
+
+body#register input[type="submit"]:hover {
+    background-color: #3a1f4c;
+}
+
+body#register input[type="reset"]:hover {
+    background-color: #9166aa;
+}
+
+body#register p {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+body#register a {
+    color: #3b0a6f;
+    text-decoration: none;
+    font-weight: bold;
+}
