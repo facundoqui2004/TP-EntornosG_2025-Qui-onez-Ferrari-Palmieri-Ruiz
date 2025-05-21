@@ -1,10 +1,15 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+require '../vendor/autoload.php';
+
 // Include config file
 include_once '../PHP/config.inc';
 
 // Inicializamos variables
-$username = $password = $confirm_password = $role = "";
-$username_err = $password_err = $confirm_password_err = "";
+$username = $password = $confirm_password = $role = $mail = "";
+$username_err = $password_err = $confirm_password_err = $mail_err = "";
+$verification_code = "";
 
 // Procesar el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -33,6 +38,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->close();
         }
     }
+    // Validar correo
+    if (empty(trim($_POST["mail"]))) {
+        $mail_err = "Por favor ingresa un correo electrónico.";
+    } elseif (!filter_var(trim($_POST["mail"]), FILTER_VALIDATE_EMAIL)) {
+        $mail_err = "Formato de correo inválido.";
+    } else {
+        $sql = "SELECT id FROM users WHERE mail = ?";
+        if ($stmt = mysqli_prepare($link, $sql)) {
+            mysqli_stmt_bind_param($stmt, "s", $param_mail);
+            $param_mail = trim($_POST["mail"]);
+
+            if (mysqli_stmt_execute($stmt)) {
+                mysqli_stmt_store_result($stmt);
+                if (mysqli_stmt_num_rows($stmt) == 1) {
+                    $mail_err = "Este correo ya está registrado.";
+                } else {
+                    $mail = trim($_POST["mail"]);
+                }
+            } else {
+                echo "Algo salió mal. Intenta de nuevo.";
+            }
+            mysqli_stmt_close($stmt);
+        }
+    }
+
+    // enviar token de verificación al correo
+
+
 
     // Validar contraseña
     if (empty(trim($_POST["password"]))) {
@@ -56,21 +89,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener rol
     $role = $_POST["role"];
     $estado = ($role == "dueno") ? 0 : 1;
+    $verification_code = substr(md5(uniqid(mt_rand(), true)), 0, 6); // Código aleatorio de 6 caracteres
 
-    // Si no hay errores, insertar
-    if (empty($username_err) && empty($password_err) && empty($confirm_password_err)) {
-        $sql = "INSERT INTO users (username, password, role, estado) VALUES (?, ?, ?, ?)";
+    // Si no hay errores
+    if (empty($username_err) && empty($password_err) && empty($confirm_password_err) && empty($mail_err)) {
+
+        $verification_code = bin2hex(random_bytes(3)); // Código de 6 caracteres
+
+        $sql = "INSERT INTO users (username, password, role, estado, mail, verification_code) VALUES (?, ?, ?, ?, ?, ?)";
         if ($stmt = mysqli_prepare($link, $sql)) {
-            mysqli_stmt_bind_param($stmt, "sssi", $param_username, $param_password, $param_role, $param_estado);
+            mysqli_stmt_bind_param($stmt, "sssiss", $param_username, $param_password, $param_role, $param_estado, $param_mail, $param_code);
 
             $param_username = $username;
             $param_password = password_hash($password, PASSWORD_DEFAULT);
             $param_role = $role;
             $param_estado = $estado;
+            $param_mail = $mail;
+            $param_code = $verification_code;
 
             if (mysqli_stmt_execute($stmt)) {
-                header("location: login.php");
-                exit;
+
+                // Enviar correo de verificación
+                $mailSender = new PHPMailer(true);
+                try {
+                    $mailSender->isSMTP();
+                    $mailSender->Host = 'smtp.gmail.com';
+                    $mailSender->SMTPAuth = true;
+                    $mailSender->Username = 'yonosoyquinio@gmail.com'; // <-- Cambia esto
+                    $mailSender->Password = 'dlul hwet lxhg wffy'; // <-- Cambia esto
+                    $mailSender->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                    $mailSender->Port = 587;
+
+                    $mailSender->setFrom('yonosoyquinio@gmail.com', 'Verificación Colibrí');
+                    $mailSender->addAddress($mail, $username);
+                    $mailSender->Subject = 'Tu código de verificación';
+                    $mailSender->Body = "Tu código de verificación es: <b>$verification_code</b>";
+
+                    $mailSender->isHTML(true);
+                    $mailSender->send();
+
+                    header("Location: ../PHP/verify.php?mail=" . urlencode($mail));
+                    exit;
+                } catch (Exception $e) {
+                    echo "Error al enviar correo: {$mailSender->ErrorInfo}";
+                }
+
             } else {
                 echo "Algo salió mal. Intenta más tarde.";
             }
@@ -106,6 +169,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <option value="cliente" <?php if ($role == "cliente") echo "selected"; ?>>Cliente</option>
                 <option value="dueno" <?php if ($role == "dueno") echo "selected"; ?>>Dueño</option>
             </select>
+        </div>
+        
+        <div class="form-group">
+            <label>Correo Electrónico</label>
+            <input type="mail" name="mail" value="<?php echo htmlspecialchars($mail); ?>">
+            <?php if (!empty($mail_err)) echo "<div class='error'>$mail_err</div>"; ?>
+
         </div>
 
         <div class="form-group">
